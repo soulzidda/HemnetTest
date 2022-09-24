@@ -36,7 +36,7 @@ fun AppTopBar(headerText: String, navController: NavController) {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                            navController.navigateUp()
+                            navController.popBackStack()
                         }
                 )
             }
