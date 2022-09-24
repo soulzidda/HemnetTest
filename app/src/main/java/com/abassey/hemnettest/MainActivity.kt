@@ -6,23 +6,28 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.abassey.hemnettest.ui.details.AdvertDetailsScreen
+import com.abassey.hemnettest.ui.find.FindScreen
 import com.abassey.hemnettest.ui.theme.HemnetTestTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             HemnetTestTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    HemnetApp()
                 }
             }
         }
@@ -30,14 +35,37 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun HemnetApp() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = DestinationScreen.Find.route) {
+        composable(DestinationScreen.Find.route) {
+            FindScreen(navController = navController, selectAdvert = { advertId ->
+                navController.navigate("${DestinationScreen.AdvertDetails.route}/$advertId")
+
+            })
+        }
+
+
+        composable(route = DestinationScreen.AdvertDetails.routeWithArgument,
+            arguments = listOf(
+                navArgument(DestinationScreen.AdvertDetails.argument) { type = NavType.StringType }
+            )
+        ) { navBackStackEntry ->
+            val advertId =
+                navBackStackEntry.arguments?.getString(DestinationScreen.AdvertDetails.argument)
+                    ?: return@composable
+            AdvertDetailsScreen(advertId = advertId, navController = navController)
+        }
+    }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    HemnetTestTheme {
-        Greeting("Android")
+sealed class DestinationScreen(val route: String) {
+    object Find : DestinationScreen("Find")
+
+    object AdvertDetails : DestinationScreen("AdvertDetails") {
+        const val routeWithArgument: String = "AdvertDetails/{advertId}"
+
+        const val argument: String = "advertId"
     }
 }
