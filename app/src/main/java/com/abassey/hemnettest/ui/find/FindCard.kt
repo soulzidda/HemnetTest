@@ -1,21 +1,29 @@
 package com.abassey.hemnettest.ui.find
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
-import com.abassey.hemnettest.R
+import androidx.compose.ui.unit.sp
+import coil.compose.SubcomposeAsyncImage
 import com.abassey.hemnettest.models.Advert
+import com.abassey.hemnettest.ui.shared.FadedText
+import com.abassey.hemnettest.ui.shared.MediumText
+import com.abassey.hemnettest.ui.shared.SuperscriptText
+import com.abassey.hemnettest.ui.theme.HemnetGreen
 import com.abassey.hemnettest.ui.theme.HemnetTestTheme
 import com.abassey.hemnettest.ui.theme.HighlightGold
 
@@ -26,107 +34,88 @@ fun FindCard(
     advert: Advert,
     selectAdvert: (String) -> Unit = {},
 ) {
-    val border = if (advert.type == "HighlightedProperty") BorderStroke(
-        width = 4.dp, color = HighlightGold
-    ) else null
+    val isHighlighted = advert.type == "HighlightedProperty"
+    val isArea = advert.type == "Area"
 
-
-    Card(
-        modifier = Modifier
-            .padding(horizontal = 10.dp)
-            .clickable(onClick = { selectAdvert(advert.id) }), border = border
+    Column(
+        Modifier
+            .background(MaterialTheme.colors.background)
+            .padding(horizontal = 10.dp, vertical = 16.dp)
+            .clickable(onClick = { selectAdvert(advert.id) })
     ) {
-        Column(
-            Modifier.background(MaterialTheme.colors.background)
+        if (isArea) {
+            Text(text = "område", fontWeight = FontWeight.Bold, fontSize = 30.sp)
+        }
+        Box(
+            modifier = Modifier
+                .border(
+                    if (isHighlighted) BorderStroke(
+                        width = 2.dp, color = HighlightGold
+                    ) else BorderStroke(
+                        width = 0.dp, color = Color.Transparent
+                    )
+                )
+                .height(200.dp), contentAlignment = Alignment.BottomCenter
         ) {
-            Image(
-                painter = rememberImagePainter(advert.image, builder = {
-                    placeholder(R.drawable.placeholder)
 
-                }),
-                contentDescription = null,
-                Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1.3f),
-            )
-            TextRowOne(
-                isProperty = advert.type == "Area",
-                area = advert.area,
-                rooms = advert.numberOfRooms,
-                streetAddress = advert.streetAddress
-            )
+            SubcomposeAsyncImage(
+                model = advert.image, contentDescription = "test", loading = {
 
-            TextRowTwo(
-                isProperty = advert.type == "Area",
-                area = advert.area,
-                municipality = advert.municipality,
-                rating = advert.rating
+                    LinearProgressIndicator(color = HemnetGreen)
+                }, modifier = Modifier.fillMaxWidth(), contentScale = ContentScale.Crop
             )
-            TextRowThree(
-                isProperty = advert.type == "Area",
-                daysOnHemnet = advert.daysOnHemnet,
-                askingPrice = advert.askingPrice,
-                livingArea = advert.livingArea,
-                averagePrice = advert.averagePrice,
-                rooms = advert.numberOfRooms
-            )
+        }
+        SubHeadingText(advert = advert, isArea = isArea)
+        RatingOrAreaText(advert = advert, isArea = isArea)
+        AverageOrFullPrice(advert = advert, isArea = isArea)
+    }
 
+}
+
+@Composable
+private fun SubHeadingText(advert: Advert, isArea: Boolean) {
+    Text(
+        modifier = Modifier,
+        text = if (isArea) "${advert.area}" else "${advert.streetAddress}, ${advert.numberOfRooms}tr",
+        fontWeight = FontWeight.Bold
+    )
+}
+
+@Composable
+private fun RatingOrAreaText(advert: Advert, isArea: Boolean) {
+    if (isArea) {
+        MediumText(text = "Betyg: ${advert.rating}")
+    } else {
+        FadedText(text = "${advert.area}, ${advert.municipality}", Modifier, 16.sp)
+    }
+}
+
+@Composable
+private fun AverageOrFullPrice(advert: Advert, isArea: Boolean) {
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+
+    if (isArea) {
+        MediumText(text = "Snittpris: ${advert.averagePrice}")
+    } else {
+        Row(
+            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.width(screenWidth / 2.2f)
+            ) {
+                Text(
+                    text = "${advert.askingPrice}", fontSize = 14.sp
+                )
+                SuperscriptText(text = "${advert.livingArea} m", appendText = "2")
+                Text(
+                    text = "${advert.numberOfRooms} rum", fontSize = 14.sp
+                )
+            }
+            FadedText(text = "${advert.daysOnHemnet} dagar", Modifier, fontSize = 14.sp)
         }
     }
 }
-
-
-@Composable
-private fun TextRowOne(isProperty: Boolean, area: String, rooms: Int?, streetAddress: String?) {
-    if (isProperty) Text(
-        modifier = Modifier.padding(
-            horizontal = 10.dp, vertical = 0.dp
-        ), text = area
-    ) else Text(
-        modifier = Modifier.padding(horizontal = 10.dp, vertical = 0.dp),
-        text = "${streetAddress}, ${rooms}tr",
-    )
-}
-
-@Composable
-private fun TextRowTwo(isProperty: Boolean, area: String?, municipality: String?, rating: String?) {
-    if (isProperty) Text(
-        modifier = Modifier.padding(
-            horizontal = 10.dp, vertical = 0.dp
-        ), text = "Betyg: $rating"
-    ) else Text(
-        modifier = Modifier.padding(horizontal = 10.dp, vertical = 0.dp),
-        text = "$area, $municipality",
-    )
-}
-
-@Composable
-private fun TextRowThree(
-    isProperty: Boolean,
-    daysOnHemnet: Int?,
-    askingPrice: String?,
-    livingArea: Short?,
-    averagePrice: String?,
-    rooms: Int?
-) {
-    if (isProperty) Text(
-        modifier = Modifier.padding(
-            horizontal = 10.dp, vertical = 0.dp
-        ),
-        text = "Snittpris: $averagePrice",
-    ) else Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 5.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = "$askingPrice $livingArea $rooms rum",
-        )
-        Text(text = "$daysOnHemnet dagar")
-    }
-}
-
 
 @Composable
 @Preview(name = "HomePoster Dark Theme")

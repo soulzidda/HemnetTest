@@ -1,5 +1,6 @@
 package com.abassey.hemnettest
 
+import android.content.Context
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -21,6 +22,8 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 fun HemnetApp() {
     val navController = rememberAnimatedNavController()
     val springSpec = spring<IntOffset>(dampingRatio = Spring.DampingRatioNoBouncy)
+
+
 
     AnimatedNavHost(
         navController = navController,
