@@ -17,6 +17,7 @@ import coil.compose.rememberImagePainter
 import com.abassey.hemnettest.R
 import com.abassey.hemnettest.models.Advert
 import com.abassey.hemnettest.ui.theme.HemnetTestTheme
+import com.abassey.hemnettest.ui.theme.HighlightGold
 
 
 @Composable
@@ -26,7 +27,7 @@ fun FindCard(
     selectAdvert: (String) -> Unit = {},
 ) {
     val border = if (advert.type == "HighlightedProperty") BorderStroke(
-        width = 4.dp, color = Color.Magenta
+        width = 4.dp, color = HighlightGold
     ) else null
 
 
