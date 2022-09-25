@@ -5,9 +5,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -86,7 +89,19 @@ private fun RatingOrAreaText(advert: Advert, isArea: Boolean) {
     if (isArea) {
         MediumText(text = "Betyg: ${advert.rating}")
     } else {
-        FadedText(text = "${advert.area}, ${advert.municipality}", Modifier, 16.sp)
+        Row() {
+            Icon(
+                imageVector = Icons.Filled.Home,
+                contentDescription = "Icon",
+                tint = HemnetGreen, modifier = Modifier.size(20.dp)
+            )
+            FadedText(
+                text = "${advert.area}, ${advert.municipality}",
+                Modifier.padding(horizontal = 5.dp),
+                16.sp
+            )
+        }
+
     }
 }
 

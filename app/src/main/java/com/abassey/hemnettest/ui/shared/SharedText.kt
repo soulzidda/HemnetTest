@@ -42,7 +42,7 @@ fun SuperscriptText(text: String, appendText: String) {
 }
 
 
-val superscript = SpanStyle(
+private val superscript = SpanStyle(
     baselineShift = BaselineShift.Superscript,
     fontSize = 8.sp,
     color = Color.Black
