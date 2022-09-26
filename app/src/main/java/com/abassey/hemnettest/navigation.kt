@@ -1,6 +1,5 @@
 package com.abassey.hemnettest
 
-import android.content.Context
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -60,8 +59,6 @@ fun HemnetApp() {
 
             })
         }
-
-
         composable(route = DestinationScreen.AdvertDetails.routeWithArgument,
             arguments = listOf(
                 navArgument(DestinationScreen.AdvertDetails.argument) { type = NavType.StringType }

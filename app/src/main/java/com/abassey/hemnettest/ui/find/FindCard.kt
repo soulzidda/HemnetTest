@@ -44,7 +44,7 @@ fun FindCard(
         Modifier
             .background(MaterialTheme.colors.background)
             .padding(horizontal = 10.dp, vertical = 16.dp)
-            .clickable(onClick = { selectAdvert(advert.id) })
+            .clickable(onClick = { selectAdvert(advert.id as String) })
     ) {
         if (isArea) {
             Text(text = "område", fontWeight = FontWeight.Bold, fontSize = 30.sp)
@@ -104,6 +104,7 @@ private fun RatingOrAreaText(advert: Advert, isArea: Boolean) {
 
     }
 }
+
 
 @Composable
 private fun AverageOrFullPrice(advert: Advert, isArea: Boolean) {

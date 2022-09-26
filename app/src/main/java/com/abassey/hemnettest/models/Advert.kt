@@ -4,17 +4,17 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class Advert(
-    val id: String,
-    val type: String,
+    val id: String? = null,
+    val type: String? = null,
     val askingPrice: String? = null,
     val monthlyFee: String? = null,
     val municipality: String? = null,
-    val area: String,
+    val area: String? = null,
     val daysOnHemnet: Int? = null,
     val livingArea: Short? = null,
     val numberOfRooms: Int? = null,
     val streetAddress: String? = null,
-    val image: String,
+    val image: String? = null,
     val rating: String? = null,
     val averagePrice: String? = null
 ) {
