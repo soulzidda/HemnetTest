@@ -33,7 +33,6 @@ import com.abassey.hemnettest.ui.theme.HighlightGold
 
 @Composable
 fun FindCard(
-    modifier: Modifier = Modifier,
     advert: Advert,
     selectAdvert: (String) -> Unit = {},
 ) {

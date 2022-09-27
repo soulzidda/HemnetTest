@@ -4,7 +4,7 @@ import com.abassey.hemnettest.models.Advert
 import com.abassey.hemnettest.network.AdvertNetworkMapper
 import com.abassey.hemnettest.network.AdvertService
 
-class AdvertRepository_Impl(
+class AdvertRepositoryImpl(
     private val advertService: AdvertService,
     private val mapper: AdvertNetworkMapper
 ) : AdvertRepository {

@@ -8,13 +8,17 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.abassey.hemnettest.ui.details.AdvertDetailsScreen
 import com.abassey.hemnettest.ui.find.FindScreen
+import com.abassey.hemnettest.ui.find.FindScreenViewModel
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import dagger.hilt.android.AndroidEntryPoint
+
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -54,10 +58,14 @@ fun HemnetApp() {
         modifier = Modifier,
     ) {
         composable(DestinationScreen.Find.route) {
-            FindScreen(navController = navController, selectAdvert = { advertId ->
-                navController.navigate("${DestinationScreen.AdvertDetails.route}/$advertId")
+            val viewModel = hiltViewModel<FindScreenViewModel>()
+            FindScreen(
+                viewModel = viewModel,
+                navController = navController,
+                selectAdvert = { advertId ->
+                    navController.navigate("${DestinationScreen.AdvertDetails.route}/$advertId")
 
-            })
+                })
         }
         composable(route = DestinationScreen.AdvertDetails.routeWithArgument,
             arguments = listOf(
