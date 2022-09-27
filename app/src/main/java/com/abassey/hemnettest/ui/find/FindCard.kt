@@ -96,7 +96,7 @@ private fun AverageOrFullPrice(advert: Advert, isArea: Boolean) {
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.width(screenWidth / 2.2f)
+                modifier = Modifier.width(screenWidth / 2)
             ) {
                 Text(
                     text = "${advert.askingPrice}", fontSize = 14.sp
