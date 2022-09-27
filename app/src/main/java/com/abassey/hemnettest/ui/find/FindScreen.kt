@@ -1,5 +1,7 @@
 package com.abassey.hemnettest.ui.find
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -7,8 +9,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.key
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,10 +34,16 @@ fun FindScreen(
         topBar = { AppTopBar(headerText = headerText, navController) }) {
         if (!errorMessage.isNullOrEmpty()) ErrorState(
             errorMessage, Modifier.padding(it)
-        ) else if (isLoading) ScreenLoadingView()
-        else adverts(
-            adverts = adverts, selectAdvert = selectAdvert, modifier = Modifier.padding(it)
-        )
+        ) else Crossfade(
+            targetState = isLoading, animationSpec = tween(1000)
+        ) { isLoading: Boolean ->
+            when (isLoading) {
+                false -> adverts(
+                    adverts = adverts, selectAdvert = selectAdvert, modifier = Modifier.padding(it)
+                )
+                true -> ScreenLoadingView()
+            }
+        }
     }
 }
 
@@ -51,11 +58,13 @@ fun adverts(
             .verticalScroll(rememberScrollState())
             .background(MaterialTheme.colors.background),
     ) {
+        var currentPage by remember { mutableStateOf("A") }
         adverts.forEach { advert ->
             key(advert.id) {
                 FindCard(advert = advert, selectAdvert = selectAdvert)
             }
         }
+
     }
 }
 

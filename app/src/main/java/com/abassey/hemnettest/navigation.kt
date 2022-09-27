@@ -23,14 +23,17 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 @Composable
 fun HemnetApp() {
     val navController = rememberAnimatedNavController()
-    val springSpec = spring<IntOffset>(dampingRatio = Spring.DampingRatioNoBouncy)
+    val springSpec = spring<IntOffset>(
+        dampingRatio = Spring.DampingRatioNoBouncy,
+        stiffness = 200f
+    )
 
     AnimatedNavHost(
         navController = navController,
         startDestination = DestinationScreen.Find.route,
         enterTransition = {
             slideInHorizontally(
-                initialOffsetX = { 1000 }, animationSpec = springSpec
+                initialOffsetX = { 1000 }, animationSpec = springSpec,
             )
         },
         exitTransition = {
