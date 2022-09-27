@@ -1,5 +1,5 @@
 package com.abassey.hemnettest.utils
 
-interface NetworkMapper<ResponseAdvertModal, ObjectModel> {
+interface NetworkMapperHelper<ResponseAdvertModal, ObjectModel> {
     fun mapFromNetworkResponse(response: ResponseAdvertModal): ObjectModel
 }

@@ -1,8 +1,5 @@
 package com.abassey.hemnettest.models
 
-import androidx.compose.runtime.Immutable
-
-@Immutable
 data class Advert(
     val id: String? = null,
     val type: String? = null,

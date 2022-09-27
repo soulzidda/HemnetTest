@@ -25,14 +25,11 @@ class NetworkModule {
     @Singleton
     @Provides
     fun providesAdvertService(): AdvertService {
-        val moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
+        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
         return Retrofit.Builder()
             .baseUrl("https://gist.githubusercontent.com/soulzidda/220a8305a6437f3be37eae6198f4d0db/raw/bed8d1e25b85741a4e2ff1d88230b0024ba04e13/")
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .build().create(AdvertService::class.java)
-
+            .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
+            .create(AdvertService::class.java)
     }
 }

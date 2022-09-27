@@ -6,7 +6,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
-import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -15,21 +14,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.SubcomposeAsyncImage
 import com.abassey.hemnettest.models.Advert
-import com.abassey.hemnettest.ui.shared.FadedText
-import com.abassey.hemnettest.ui.shared.MediumText
-import com.abassey.hemnettest.ui.shared.SuperscriptText
+import com.abassey.hemnettest.ui.shared.*
 import com.abassey.hemnettest.ui.theme.HemnetGreen
 import com.abassey.hemnettest.ui.theme.HemnetTestTheme
 import com.abassey.hemnettest.ui.theme.HighlightGold
-
 
 @Composable
 fun FindCard(
@@ -48,8 +42,8 @@ fun FindCard(
         if (isArea) {
             Text(text = "område", fontWeight = FontWeight.Bold, fontSize = 30.sp)
         }
-        Box(
-            modifier = Modifier
+        Image(
+            Modifier
                 .border(
                     if (isHighlighted) BorderStroke(
                         width = 2.dp, color = HighlightGold
@@ -57,30 +51,15 @@ fun FindCard(
                         width = 0.dp, color = Color.Transparent
                     )
                 )
-                .height(200.dp), contentAlignment = Alignment.BottomCenter
-        ) {
-
-            SubcomposeAsyncImage(
-                model = advert.image, contentDescription = "test", loading = {
-
-                    LinearProgressIndicator(color = HemnetGreen)
-                }, modifier = Modifier.fillMaxWidth(), contentScale = ContentScale.Crop
-            )
-        }
+                .height(200.dp),
+            contentAlignment = Alignment.BottomCenter,
+            isHighlighted,
+            image = advert.image as String
+        )
         SubHeadingText(advert = advert, isArea = isArea)
         RatingOrAreaText(advert = advert, isArea = isArea)
         AverageOrFullPrice(advert = advert, isArea = isArea)
     }
-
-}
-
-@Composable
-private fun SubHeadingText(advert: Advert, isArea: Boolean) {
-    Text(
-        modifier = Modifier,
-        text = if (isArea) "${advert.area}" else "${advert.streetAddress}, ${advert.numberOfRooms}tr",
-        fontWeight = FontWeight.Bold
-    )
 }
 
 @Composable
@@ -92,7 +71,8 @@ private fun RatingOrAreaText(advert: Advert, isArea: Boolean) {
             Icon(
                 imageVector = Icons.Filled.Home,
                 contentDescription = "Icon",
-                tint = HemnetGreen, modifier = Modifier.size(20.dp)
+                tint = HemnetGreen,
+                modifier = Modifier.size(20.dp)
             )
             FadedText(
                 text = "${advert.area}, ${advert.municipality}",
@@ -100,7 +80,6 @@ private fun RatingOrAreaText(advert: Advert, isArea: Boolean) {
                 16.sp
             )
         }
-
     }
 }
 

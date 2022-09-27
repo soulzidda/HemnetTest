@@ -11,13 +11,12 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.abassey.hemnettest.ui.details.AdvertDetailsScreen
+import com.abassey.hemnettest.ui.details.DetailsScreen
 import com.abassey.hemnettest.ui.find.FindScreen
-import com.abassey.hemnettest.ui.find.FindScreenViewModel
+import com.abassey.hemnettest.ui.shared.AdvertViewModel
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import dagger.hilt.android.AndroidEntryPoint
 
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -26,66 +25,60 @@ fun HemnetApp() {
     val navController = rememberAnimatedNavController()
     val springSpec = spring<IntOffset>(dampingRatio = Spring.DampingRatioNoBouncy)
 
-
-
     AnimatedNavHost(
         navController = navController,
         startDestination = DestinationScreen.Find.route,
         enterTransition = {
             slideInHorizontally(
-                initialOffsetX = { 1000 },
-                animationSpec = springSpec
+                initialOffsetX = { 1000 }, animationSpec = springSpec
             )
         },
         exitTransition = {
             slideOutHorizontally(
-                targetOffsetX = { -1000 },
-                animationSpec = springSpec
+                targetOffsetX = { -1000 }, animationSpec = springSpec
             )
         },
         popEnterTransition = {
             slideInHorizontally(
-                initialOffsetX = { -1000 },
-                animationSpec = springSpec
+                initialOffsetX = { -1000 }, animationSpec = springSpec
             )
         },
         popExitTransition = {
             slideOutHorizontally(
-                targetOffsetX = { 1000 },
-                animationSpec = springSpec
+                targetOffsetX = { 1000 }, animationSpec = springSpec
             )
         },
         modifier = Modifier,
     ) {
         composable(DestinationScreen.Find.route) {
-            val viewModel = hiltViewModel<FindScreenViewModel>()
-            FindScreen(
-                viewModel = viewModel,
+            val advertViewModel = hiltViewModel<AdvertViewModel>()
+            FindScreen(viewModel = advertViewModel,
                 navController = navController,
                 selectAdvert = { advertId ->
                     navController.navigate("${DestinationScreen.AdvertDetails.route}/$advertId")
-
                 })
         }
-        composable(route = DestinationScreen.AdvertDetails.routeWithArgument,
-            arguments = listOf(
-                navArgument(DestinationScreen.AdvertDetails.argument) { type = NavType.StringType }
-            )
+        composable(
+            route = DestinationScreen.AdvertDetails.routeWithArgument,
+            arguments = listOf(navArgument(
+                DestinationScreen.AdvertDetails.argument
+            ) { type = NavType.StringType })
         ) { navBackStackEntry ->
+            val advertViewModel = hiltViewModel<AdvertViewModel>()
             val advertId =
                 navBackStackEntry.arguments?.getString(DestinationScreen.AdvertDetails.argument)
                     ?: return@composable
-            AdvertDetailsScreen(advertId = advertId, navController = navController)
+            DetailsScreen(
+                viewModel = advertViewModel, advertId = advertId, navController = navController
+            )
         }
     }
 }
 
 sealed class DestinationScreen(val route: String) {
     object Find : DestinationScreen("Find")
-
     object AdvertDetails : DestinationScreen("AdvertDetails") {
         const val routeWithArgument: String = "AdvertDetails/{advertId}"
-
         const val argument: String = "advertId"
     }
 }

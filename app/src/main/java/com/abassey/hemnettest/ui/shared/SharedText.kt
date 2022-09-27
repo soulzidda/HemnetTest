@@ -12,12 +12,12 @@ import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import com.abassey.hemnettest.models.Advert
 
 @Composable
 fun FadedText(text: String, modifier: Modifier, fontSize: TextUnit) {
     Text(
-        text = text,
-        modifier.alpha(0.6f), fontSize = fontSize
+        text = text, modifier.alpha(0.6f), fontSize = fontSize
     )
 }
 
@@ -30,20 +30,23 @@ fun MediumText(text: String) {
 
 @Composable
 fun SuperscriptText(text: String, appendText: String) {
-    Text(
-        fontSize = 14.sp,
-        text = buildAnnotatedString {
-            append(text)
-            withStyle(superscript) {
-                append(appendText)
-            }
+    Text(fontSize = 14.sp, text = buildAnnotatedString {
+        append(text)
+        withStyle(superscript) {
+            append(appendText)
         }
+    })
+}
+
+@Composable
+fun SubHeadingText(advert: Advert, isArea: Boolean) {
+    Text(
+        modifier = Modifier,
+        text = if (isArea) "${advert.area}" else "${advert.streetAddress}, ${advert.numberOfRooms}tr",
+        fontWeight = FontWeight.Bold
     )
 }
 
-
 private val superscript = SpanStyle(
-    baselineShift = BaselineShift.Superscript,
-    fontSize = 8.sp,
-    color = Color.Black
+    baselineShift = BaselineShift.Superscript, fontSize = 8.sp, color = Color.Black
 )

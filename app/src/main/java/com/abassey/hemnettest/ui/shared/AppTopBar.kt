@@ -22,14 +22,12 @@ import com.abassey.hemnettest.ui.theme.HemnetGreen
 fun AppTopBar(headerText: String, navController: NavController) {
     val backButtonActive: Boolean = navController.previousBackStackEntry != null
 
-
     TopAppBar(
         backgroundColor = HemnetGreen,
     ) {
         Row() {
             if (backButtonActive) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowBack,
+                Icon(imageVector = Icons.Filled.ArrowBack,
 
                     tint = Color.White,
                     contentDescription = "Back button",
@@ -37,8 +35,7 @@ fun AppTopBar(headerText: String, navController: NavController) {
                         .padding(16.dp)
                         .clickable {
                             navController.popBackStack()
-                        }
-                )
+                        })
             }
             Text(
                 modifier = Modifier
@@ -50,7 +47,5 @@ fun AppTopBar(headerText: String, navController: NavController) {
                 fontWeight = FontWeight.Bold
             )
         }
-
-
     }
 }

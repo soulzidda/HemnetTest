@@ -1,4 +1,4 @@
-package com.abassey.hemnettest.main
+package com.abassey.hemnettest.ui.main
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

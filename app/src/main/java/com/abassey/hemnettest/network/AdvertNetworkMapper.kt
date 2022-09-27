@@ -2,9 +2,9 @@ package com.abassey.hemnettest.network
 
 import com.abassey.hemnettest.models.Advert
 import com.abassey.hemnettest.models.ResponseAdvertModel
-import com.abassey.hemnettest.utils.NetworkMapper
+import com.abassey.hemnettest.utils.NetworkMapperHelper
 
-class AdvertNetworkMapper : NetworkMapper<ResponseAdvertModel, Advert> {
+class AdvertNetworkMapper : NetworkMapperHelper<ResponseAdvertModel, Advert> {
     override fun mapFromNetworkResponse(response: ResponseAdvertModel): Advert {
         return Advert(
             id = response.id,
@@ -17,12 +17,13 @@ class AdvertNetworkMapper : NetworkMapper<ResponseAdvertModel, Advert> {
             livingArea = response.livingArea,
             numberOfRooms = response.numberOfRooms,
             streetAddress = response.streetAddress,
-            image = response.image
+            image = response.image,
+            rating = response.rating,
+            averagePrice = response.averagePrice
         )
     }
 
     fun fromNetworkList(initialValue: List<ResponseAdvertModel>): List<Advert> {
         return initialValue.map { mapFromNetworkResponse(it) }
     }
-
 }

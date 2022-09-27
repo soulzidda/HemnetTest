@@ -1,7 +1,7 @@
 package com.abassey.hemnettest.di
 
 import android.content.Context
-import com.abassey.hemnettest.main.MainApplication
+import com.abassey.hemnettest.ui.main.MainApplication
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,5 +18,4 @@ object AppModule {
     fun provideApplication(@ApplicationContext app: Context): MainApplication {
         return app as MainApplication
     }
-
 }
