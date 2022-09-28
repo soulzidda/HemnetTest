@@ -8,13 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.abassey.hemnettest.models.Advert
-import com.abassey.hemnettest.ui.shared.AdvertViewModel
-import com.abassey.hemnettest.ui.shared.AppTopBar
-import com.abassey.hemnettest.ui.shared.Image
-import com.abassey.hemnettest.ui.shared.SubHeadingText
+import com.abassey.hemnettest.ui.shared.*
 
 @Composable
 fun DetailsScreen(
@@ -25,13 +24,13 @@ fun DetailsScreen(
     Scaffold(backgroundColor = Color.White,
         topBar = { AppTopBar(headerText = headerText, navController) }) {
         Column(Modifier.padding(it)) {
-            DetailsLayout(advert = advert)
+            DetailsLayout(advert = advert, advertId = advertId)
         }
     }
 }
 
 @Composable
-fun DetailsLayout(advert: Advert?) {
+fun DetailsLayout(advert: Advert?, advertId: String) {
     Column(
         Modifier
             .background(MaterialTheme.colors.background)
@@ -51,7 +50,13 @@ fun DetailsLayout(advert: Advert?) {
             SubHeadingText(
                 advert = advert, isArea = isArea
             )
+            FadedText(text = advertId, modifier = Modifier, fontSize = 14.sp)
         }
     }
 }
 
+@Composable
+@Preview
+fun DetailsLayoutPreview() {
+    Advert.mock().id?.let { DetailsLayout(advert = Advert.mock(), advertId = it) }
+}
